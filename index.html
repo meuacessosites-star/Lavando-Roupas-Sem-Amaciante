@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>Lavando Roupas Sem Amaciante no Tanquinho</title>
+    
+    <!-- Meta tags para Mobile App -->
+    <meta name="theme-color" content="#0284c7">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Tanquinho Cheiroso">
+    <meta name="description" content="Guia prático e calculadora de dosagem de Vinagre + Coala para lavar roupas no tanquinho.">
+
+    <!-- FAVICON PERSONALIZADO (URL Externa Enviada) -->
+    <link rel="icon" type="image/png" href="https://i.postimg.cc/zGjMCGPj/1786247129877.png">
+    <link rel="shortcut icon" type="image/png" href="https://i.postimg.cc/zGjMCGPj/1786247129877.png">
+    <link rel="apple-touch-icon" href="https://i.postimg.cc/zGjMCGPj/1786247129877.png">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- HTML2PDF Library para download direto de PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#075985',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .gradient-banner {
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 50%, #0f172a 100%);
+        }
+
+        .checklist-checkbox:checked + div span.check-title {
+            text-decoration: line-through;
+            color: #94a3b8;
+        }
+
+        .checklist-card:has(.checklist-checkbox:checked) {
+            background-color: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        /* Estilização para impressão e geração de PDF */
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            body {
+                background: white !important;
+                color: black !important;
+            }
+            .card-print {
+                border: 1px solid #cbd5e1 !important;
+                box-shadow: none !important;
+                break-inside: avoid;
+            }
+            .mobile-card-view {
+                display: block !important;
+            }
+            .desktop-table-view {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="pb-12 antialiased" id="guia-conteudo">
+
+    <!-- CABEÇALHO COMPACTO PARA CELULAR -->
+    <header class="gradient-banner text-white pt-6 pb-10 px-4 shadow-lg text-center">
+        <div class="max-w-3xl mx-auto space-y-3">
+            <div class="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-md px-3.5 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wider border border-white/20">
+                <span>🧺 Guia de Lavanderia Prático</span>
+            </div>
+            
+            <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
+                Lavando Roupas Sem Amaciante no Tanquinho
+            </h1>
+            
+            <p class="text-sky-100 text-xs sm:text-sm max-w-xl mx-auto leading-relaxed">
+                Use <strong class="text-white underline decoration-amber-400">Vinagre de Álcool</strong> + <strong class="text-white underline decoration-amber-400">Coala (Floral ou sua preferência)</strong> para roupas macias, desinfetadas e super cheirosas!
+            </p>
+
+            <!-- Ações Principais de Download Direto + Como Instalar -->
+            <div class="pt-2 flex flex-wrap justify-center gap-2.5 no-print">
+                <button onclick="abrirModalAjuda()" class="bg-amber-400 active:bg-amber-500 text-slate-900 font-bold px-4 py-2.5 rounded-xl shadow-md text-xs flex items-center gap-1.5 transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18l-6-6h4V4h4v8h4l-6 6zM4 20h16"></path></svg>
+                    📲 Como Adicionar na Tela Inicial
+                </button>
+
+                <button onclick="baixarPdf()" class="bg-white/15 active:bg-white/25 text-white font-bold px-3.5 py-2.5 rounded-xl border border-white/20 text-xs flex items-center gap-1.5 transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    Baixar PDF (.pdf)
+                </button>
+
+                <button onclick="baixarHtml()" class="bg-emerald-500 active:bg-emerald-600 text-white font-bold px-3.5 py-2.5 rounded-xl shadow-md text-xs flex items-center gap-1.5 transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    Baixar Guia (.html)
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-3xl mx-auto px-3.5 -mt-5 space-y-5">
+
+        <!-- RESUMO DOS PRODUTOS -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <!-- Vinagre -->
+            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center gap-3.5 card-print">
+                <div class="w-11 h-11 shrink-0 bg-sky-100 text-sky-700 rounded-xl flex items-center justify-center font-bold text-2xl">
+                    🧪
+                </div>
+                <div>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-sky-600 block">Base de Enxágue</span>
+                    <h3 class="font-bold text-slate-800 text-sm">Vinagre de Álcool (4% ou 6%)</h3>
+                    <p class="text-[11px] text-slate-500 leading-snug mt-0.5">
+                        Desinfeta, amacia e remove o sabão. Serve para <strong>todas</strong> as peças!
+                    </p>
+                </div>
+            </div>
+
+            <!-- Coala -->
+            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex items-start gap-3.5 card-print">
+                <div class="w-11 h-11 shrink-0 bg-rose-100 text-rose-700 rounded-xl flex items-center justify-center font-bold text-2xl">
+                    🌸
+                </div>
+                <div>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-rose-600 block">Essência Concentrada</span>
+                    <h3 class="font-bold text-slate-800 text-sm">Coala (Floral ou sua preferência)</h3>
+                    <p class="text-[11px] text-slate-500 leading-snug mt-0.5">
+                        Use Floral, Lavanda ou Algodão. Apenas para roupas comuns, toalhas e lençóis.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- OPÇÃO DE ÁGUA E CENTRÍFUGA -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="bg-sky-50 border border-sky-200 p-4 rounded-2xl card-print space-y-1.5">
+                <div class="flex items-center gap-2 text-sky-900 font-bold text-xs sm:text-sm">
+                    <span>💧</span> Água: Reaproveitar ou Trocar?
+                </div>
+                <p class="text-[11px] text-sky-950 leading-relaxed">
+                    Você pode enxaguar várias levas na <strong>mesma água</strong> para economizar. Se na 4ª ou 5ª leva acumular muita espuma de sabão, troque por água limpa!
+                </p>
+            </div>
+
+            <div class="bg-indigo-50 border border-indigo-200 p-4 rounded-2xl card-print space-y-1.5">
+                <div class="flex items-center gap-2 text-indigo-900 font-bold text-xs sm:text-sm">
+                    <span>🌀</span> Torcer na Mão ou Centrífuga?
+                </div>
+                <p class="text-[11px] text-indigo-950 leading-relaxed">
+                    A centrífuga é <strong>opcional</strong>! Se não tiver, basta torcer bem na mão. Se usar centrífuga, rode Panos + Íntimas primeiro, e Roupas Perfumadas depois.
+                </p>
+            </div>
+        </section>
+
+        <!-- CALCULADORA DE DOSAGEM INTERATIVA -->
+        <section class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 card-print space-y-4">
+            
+            <div class="space-y-3 border-b border-slate-100 pb-3">
+                <div>
+                    <h2 class="text-base sm:text-lg font-extrabold text-slate-800 flex items-center gap-1.5">
+                        <span>📊</span> Calculadora de Dosagem
+                    </h2>
+                    <p class="text-[11px] text-slate-500">Escolha o modo da água e a quantidade de levas do seu dia:</p>
+                </div>
+
+                <!-- Painel de Controles Otimizado para Celular -->
+                <div class="space-y-2.5 no-print">
+                    <!-- Modo de Água -->
+                    <div class="flex bg-slate-100 p-1 rounded-xl text-xs font-bold text-center">
+                        <button onclick="setWaterMode('reusar')" id="btn-water-reusar" class="flex-1 py-2 rounded-lg transition">
+                            Reaproveitar Água 💧
+                        </button>
+                        <button onclick="setWaterMode('trocar')" id="btn-water-trocar" class="flex-1 py-2 rounded-lg transition">
+                            Trocar Água 🚰
+                        </button>
+                    </div>
+
+                    <!-- Número de Levas -->
+                    <div class="flex items-center justify-between bg-slate-100 p-1.5 rounded-xl text-xs font-bold">
+                        <span class="pl-2 text-[11px] text-slate-600 font-semibold">Nº de Levas:</span>
+                        <div class="flex gap-1">
+                            <button onclick="setRemessas(2)" id="btn-rem-2" class="w-8 h-8 rounded-lg transition flex items-center justify-center">2</button>
+                            <button onclick="setRemessas(3)" id="btn-rem-3" class="w-8 h-8 rounded-lg transition flex items-center justify-center">3</button>
+                            <button onclick="setRemessas(4)" id="btn-rem-4" class="w-8 h-8 rounded-lg transition flex items-center justify-center">4</button>
+                            <button onclick="setRemessas(5)" id="btn-rem-5" class="px-2.5 h-8 rounded-lg transition flex items-center justify-center">5 ⭐</button>
+                            <button onclick="setRemessas(6)" id="btn-rem-6" class="w-8 h-8 rounded-lg transition flex items-center justify-center">6</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VISÃO EM CARDS PARA CELULAR -->
+            <div id="dosage-cards-mobile" class="sm:hidden space-y-3">
+                <!-- Preenchido via JavaScript -->
+            </div>
+
+            <!-- VISÃO EM TABELA PARA DESKTOP/IMPRESSÃO (>= 640px) -->
+            <div class="hidden sm:block overflow-x-auto desktop-table-view">
+                <table class="w-full text-left text-xs sm:text-sm">
+                    <thead>
+                        <tr class="bg-slate-50 text-slate-600 uppercase text-[10px] font-bold tracking-wider">
+                            <th class="p-2.5 rounded-l-lg">Leva</th>
+                            <th class="p-2.5">O que enxaguar?</th>
+                            <th class="p-2.5">Condição da Água</th>
+                            <th class="p-2.5">Dose Vinagre</th>
+                            <th class="p-2.5">Dose Coala</th>
+                            <th class="p-2.5 rounded-r-lg">Perfume?</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dosage-table-body" class="divide-y divide-slate-100 font-medium">
+                        <!-- Preenchido via JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Dica Rápida -->
+            <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-[11px] text-amber-950 flex items-start gap-2.5">
+                <span class="text-base shrink-0">💡</span>
+                <div class="leading-relaxed">
+                    <strong>Regra Prática:</strong> Misture o Vinagre e o Coala em um copinho com água e <strong>bata por 5 segundos no tanquinho</strong> antes de mergulhar as roupas!
+                </div>
+            </div>
+        </section>
+
+        <!-- EXPLICAÇÃO DE COMO ESCOLHER O NÚMERO DE GOTAS -->
+        <section class="bg-slate-50 border-2 border-sky-200 p-4 rounded-2xl shadow-xs space-y-3 card-print">
+            <div class="flex items-center gap-2 text-sky-900 font-extrabold text-xs sm:text-sm">
+                <span>❓</span> Como escolher entre o MÍNIMO ou o MÁXIMO de gotas?
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-[11px]">
+                <!-- Quando usar MAIS gotas -->
+                <div class="bg-white p-3 rounded-xl border border-rose-200 space-y-1">
+                    <span class="font-extrabold text-rose-700 flex items-center gap-1">
+                        <span>➕</span> Use a quantidade MAIOR (ex: 12 ou 8 gotas):
+                    </span>
+                    <ul class="text-slate-600 space-y-1 pl-1 list-disc list-inside leading-snug">
+                        <li>Leva com <strong>muitas roupas</strong> (tanquinho bem cheio).</li>
+                        <li>Tecidos <strong>grossos/pesados</strong> (toalhas de banho, jeans, moletons).</li>
+                        <li>Se você quer um perfume <strong>forte e bem marcante</strong>.</li>
+                        <li>Se o aroma do Coala for suave (ex: Algodão ou Baby).</li>
+                    </ul>
+                </div>
+
+                <!-- Quando usar MENOS gotas -->
+                <div class="bg-white p-3 rounded-xl border border-sky-200 space-y-1">
+                    <span class="font-extrabold text-sky-700 flex items-center gap-1">
+                        <span>➖</span> Use a quantidade MENOR (ex: 10 ou 5 gotas):
+                    </span>
+                    <ul class="text-slate-600 space-y-1 pl-1 list-disc list-inside leading-snug">
+                        <li>Leva com <strong>poucas roupas</strong> (carga leve).</li>
+                        <li>Tecidos <strong>finos/leves</strong> (camisetas, tactel, regatas).</li>
+                        <li>Se você prefere um cheiro <strong>suave e discreto</strong>.</li>
+                        <li>Se a fragrância for muito forte (ex: Eucalipto ou Lavanda).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- REGRAS DE SEGURANÇA E HIGIENE -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <!-- Pano de Prato -->
+            <div class="bg-rose-50 border border-rose-200 p-4 rounded-2xl space-y-1.5 card-print">
+                <div class="flex items-center gap-1.5 text-rose-700 font-bold text-xs sm:text-sm">
+                    <span>🍽️</span> 1. Panos de Prato (SEM COALA)
+                </div>
+                <p class="text-[11px] text-rose-950 leading-relaxed">
+                    <strong>Não use Coala nos panos de prato!</strong> O aroma impregna e pode passar gosto/cheiro para pratos, copos e talheres na hora de secar a louça.
+                </p>
+                <div class="text-[10px] font-bold text-rose-700 bg-rose-100/80 px-2.5 py-1 rounded-md inline-block">
+                    ✓ Enxágue APENAS com Vinagre.
+                </div>
+            </div>
+
+            <!-- Peças Íntimas -->
+            <div class="bg-amber-50 border border-amber-200 p-4 rounded-2xl space-y-1.5 card-print">
+                <div class="flex items-center gap-1.5 text-amber-800 font-bold text-xs sm:text-sm">
+                    <span>🩲</span> 2. Peças Íntimas (SEM COALA)
+                </div>
+                <p class="text-[11px] text-amber-950 leading-relaxed">
+                    <strong>Não use Coala em calcinhas e cuecas!</strong> Regiões íntimas são sensíveis e essências podem causar irritações, dermatites ou coceira na pele.
+                </p>
+                <div class="text-[10px] font-bold text-amber-800 bg-amber-100 px-2.5 py-1 rounded-md inline-block">
+                    ✓ Vinagre higieniza sem irritar.
+                </div>
+            </div>
+        </section>
+
+        <!-- CHECKLIST DEDICADO -->
+        <section class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4 card-print">
+            
+            <!-- ESTRUTURA DO CABEÇALHO DO CHECKLIST -->
+            <div class="space-y-2 border-b border-slate-100 pb-3">
+                <!-- Linha 1: Título Principal -->
+                <h2 class="text-base sm:text-lg font-extrabold text-slate-800 flex items-center gap-1.5">
+                    <span>📝</span> Passo a Passo Prático
+                </h2>
+
+                <!-- Linha 2: Subtítulo -->
+                <p class="text-[11px] text-slate-500">
+                    Marque as caixinhas durante a lavagem:
+                </p>
+
+                <!-- Linha 3: Botão Desmarcar Tudo (Alinhado à Direita) -->
+                <div class="no-print pt-1 flex justify-end">
+                    <button onclick="resetChecklist()" class="bg-slate-100 hover:bg-slate-200 active:bg-slate-300 text-slate-700 font-bold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1 border border-slate-200 transition">
+                        <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                        Desmarcar tudo
+                    </button>
+                </div>
+
+                <!-- Linha 4: Barra de Porcentagem e Progresso -->
+                <div class="pt-1.5 space-y-1">
+                    <div class="flex justify-between items-center text-xs font-extrabold text-sky-700">
+                        <span>Progresso Concluído</span>
+                        <span id="progress-percent">0%</span>
+                    </div>
+                    <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                        <div id="progress-bar" class="bg-sky-500 h-2.5 rounded-full transition-all duration-300 w-0"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LISTA DE PASSOS OTIMIZADA -->
+            <div class="space-y-2.5" id="checklist-container">
+
+                <!-- Passo 1 -->
+                <label class="checklist-card flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:border-sky-300 transition cursor-pointer">
+                    <input type="checkbox" class="checklist-checkbox mt-0.5 w-4 h-4 shrink-0 accent-sky-600 rounded cursor-pointer" onchange="updateProgress()">
+                    <div class="space-y-0.5 text-xs">
+                        <span class="font-bold text-slate-800 block check-title">1. Lavagem Principal e Soltar Água Suja</span>
+                        <p class="text-[11px] text-slate-500 leading-snug">Lave todas as roupas no tanquinho normalmente com sabão e escorra a água suja no final.</p>
+                    </div>
+                </label>
+
+                <!-- Passo 2 -->
+                <label class="checklist-card flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:border-sky-300 transition cursor-pointer">
+                    <input type="checkbox" class="checklist-checkbox mt-0.5 w-4 h-4 shrink-0 accent-sky-600 rounded cursor-pointer" onchange="updateProgress()">
+                    <div class="space-y-0.5 text-xs">
+                        <span class="font-bold text-slate-800 block check-title">2. Água Limpa + 150ml Vinagre (Panos de Prato)</span>
+                        <p class="text-[11px] text-slate-500 leading-snug">Encha com água limpa do zero, ponha 1 copo (150ml) de vinagre, bata 5s e enxágue Panos de Prato (10-15 min) SEM COALA.</p>
+                    </div>
+                </label>
+
+                <!-- Passo 3 -->
+                <label class="checklist-card flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:border-sky-300 transition cursor-pointer">
+                    <input type="checkbox" class="checklist-checkbox mt-0.5 w-4 h-4 shrink-0 accent-sky-600 rounded cursor-pointer" onchange="updateProgress()">
+                    <div class="space-y-0.5 text-xs">
+                        <span class="font-bold text-slate-800 block check-title">3. Leva 2: Peças Íntimas (SEM COALA)</span>
+                        <p class="text-[11px] text-slate-500 leading-snug">Tire os panos. Na mesma água, coloque + 50ml de vinagre e enxágue as Peças Íntimas (10-15 min) SEM COALA.</p>
+                    </div>
+                </label>
+
+                <!-- Passo 4 -->
+                <label class="checklist-card flex items-start gap-3 p-3 rounded-xl border border-indigo-200 bg-indigo-50/40 hover:border-indigo-300 transition cursor-pointer">
+                    <input type="checkbox" class="checklist-checkbox mt-0.5 w-4 h-4 shrink-0 accent-indigo-600 rounded cursor-pointer" onchange="updateProgress()">
+                    <div class="space-y-0.5 text-xs">
+                        <span class="font-bold text-indigo-950 block check-title">4. Torcer na mão ou Centrifugar (Panos + Íntimas)</span>
+                        <p class="text-[11px] text-indigo-800 leading-snug">Torça na mão ou rode na centrífuga PRIMEIRO e reserve antes de aplicar o perfume na água.</p>
+                    </div>
+                </label>
+
+                <!-- Passo 5 -->
+                <label class="checklist-card flex items-start gap-3 p-3 rounded-xl border border-sky-300 bg-sky-50/40 hover:border-sky-400 transition cursor-pointer">
+                    <input type="checkbox" class="checklist-checkbox mt-0.5 w-4 h-4 shrink-0 accent-sky-600 rounded cursor-pointer" onchange="updateProgress()">
+                    <div class="space-y-0.5 text-xs">
+                        <span class="font-bold text-sky-950 block check-title">5. Aplicar Perfume: 10-12 gotas de Coala + 50ml Vinagre</span>
+                        <p class="text-[11px] text-sky-800 leading-snug">Dilua 50ml de vinagre + 10 a 12 gotas de Coala num copinho, despeje na água e <strong>bata 5 segundos</strong>.</p>
+                    </div>
+                </label>
+
+                <!-- Passo 6 -->
+                <label class="checklist-card flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:border-sky-300 transition cursor-pointer">
+                    <input type="checkbox" class="checklist-checkbox mt-0.5 w-4 h-4 shrink-0 accent-sky-600 rounded cursor-pointer" onchange="updateProgress()">
+                    <div class="space-y-0.5 text-xs">
+                        <span class="font-bold text-slate-800 block check-title">6. Leva 3: Roupas Comuns (Leva 1)</span>
+                        <p class="text-[11px] text-slate-500 leading-snug">Coloque camisetas, calças ou toalhas de banho de molho por 10 a 15 min para absorver o aroma.</p>
+                    </div>
+                </label>
+
+                <!-- Passo 7 -->
+                <label class="checklist-card flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:border-sky-300 transition cursor-pointer">
+                    <input type="checkbox" class="checklist-checkbox mt-0.5 w-4 h-4 shrink-0 accent-sky-600 rounded cursor-pointer" onchange="updateProgress()">
+                    <div class="space-y-0.5 text-xs">
+                        <span class="font-bold text-slate-800 block check-title">7. Leva 4: Roupas (Leva 2) + Reforço</span>
+                        <p class="text-[11px] text-slate-500 leading-snug">Retire as roupas anteriores. Ponha 50ml de vinagre + 5 gotas de Coala na água, bata 5s e mergulhe a 2ª leva.</p>
+                    </div>
+                </label>
+
+                <!-- Passo 8 -->
+                <label class="checklist-card flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:border-sky-300 transition cursor-pointer">
+                    <input type="checkbox" class="checklist-checkbox mt-0.5 w-4 h-4 shrink-0 accent-sky-600 rounded cursor-pointer" onchange="updateProgress()">
+                    <div class="space-y-0.5 text-xs">
+                        <span class="font-bold text-slate-800 block check-title">8. Levas Seguintes (5ª ou 6ª Leva)</span>
+                        <p class="text-[11px] text-slate-500 leading-snug">Se a água continuar limpa, ponha + 5 gotas de Coala. Se estiver turva com sabão, troque por água limpa!</p>
+                    </div>
+                </label>
+
+                <!-- Passo 9 -->
+                <label class="checklist-card flex items-start gap-3 p-3 rounded-xl border border-sky-300 bg-sky-50/40 hover:border-sky-400 transition cursor-pointer">
+                    <input type="checkbox" class="checklist-checkbox mt-0.5 w-4 h-4 shrink-0 accent-sky-600 rounded cursor-pointer" onchange="updateProgress()">
+                    <div class="space-y-0.5 text-xs">
+                        <span class="font-bold text-sky-950 block check-title">9. Torcer/Centrifugar Roupas Perfumadas</span>
+                        <p class="text-[11px] text-sky-800 leading-snug">Torça bem na mão ou rode na centrífuga (agora em rodada separada só com as roupas cheirosas).</p>
+                    </div>
+                </label>
+
+                <!-- Passo 10 -->
+                <label class="checklist-card flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:border-sky-300 transition cursor-pointer">
+                    <input type="checkbox" class="checklist-checkbox mt-0.5 w-4 h-4 shrink-0 accent-sky-600 rounded cursor-pointer" onchange="updateProgress()">
+                    <div class="space-y-0.5 text-xs">
+                        <span class="font-bold text-slate-800 block check-title">10. Pendurar no Varal (À Sombra)</span>
+                        <p class="text-[11px] text-slate-500 leading-snug">Estenda com espaço entre as peças. O sol muito forte queima a essência; prefira sombra ou sol fraco.</p>
+                    </div>
+                </label>
+
+            </div>
+        </section>
+
+        <!-- DICAS FINAIS -->
+        <section class="bg-slate-900 text-white p-4 sm:p-5 rounded-2xl shadow-md space-y-3 card-print">
+            <h3 class="font-bold text-sm sm:text-base text-amber-400 flex items-center gap-1.5">
+                <span>⭐</span> Segredos de Fixação
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-[11px] text-slate-300">
+                <div class="bg-slate-800 p-3 rounded-xl space-y-0.5">
+                    <span class="font-bold text-white block">1. Espaço no Varal</span>
+                    <p class="leading-snug">Secagem rápida garante um cheiro mais fresco e evita odores de umidade.</p>
+                </div>
+                <div class="bg-slate-800 p-3 rounded-xl space-y-0.5">
+                    <span class="font-bold text-white block">2. Zero Cheiro de Vinagre</span>
+                    <p class="leading-snug">O cheiro do vinagre evapora 100% ao secar, sobram apenas as notas do Coala.</p>
+                </div>
+                <div class="bg-slate-800 p-3 rounded-xl space-y-0.5">
+                    <span class="font-bold text-white block">3. Armário Cheiroso</span>
+                    <p class="leading-snug">Guarde bem secas e ponha um sabonete em barra na gaveta para durar semanas.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL GUIA DE COMO ADICIONAR NA TELA INICIAL DO CELULAR -->
+    <div id="modal-ajuda" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden no-print">
+        <div class="bg-white rounded-2xl p-5 max-w-sm w-full space-y-4 shadow-xl border border-slate-100">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+                <h3 class="font-extrabold text-slate-800 text-sm flex items-center gap-1.5">
+                    <span>📱</span> Salvar no Celular (Como App)
+                </h3>
+                <button onclick="fecharModalAjuda()" class="text-slate-400 hover:text-slate-600 font-bold text-lg px-2">✕</button>
+            </div>
+            
+            <p class="text-xs text-slate-600 leading-relaxed">
+                Como você está abrindo o arquivo salvo, siga estes passos simples para criar o ícone na tela do seu celular:
+            </p>
+
+            <div class="bg-sky-50 border border-sky-200 p-3 rounded-xl text-[11px] text-sky-950 space-y-2">
+                <p class="font-bold text-sky-800">No Android (Chrome):</p>
+                <p>1. Toque nos <strong>3 pontinhos (⋮)</strong> no topo do Chrome.</p>
+                <p>2. Procure a opção <strong>"Adicionar à tela inicial"</strong> ou <strong>"Adicionar guia ao grupo"</strong>.</p>
+                <p class="text-slate-500 italic">*Se a opção não aparecer, salve este arquivo HTML na pasta de Downloads e abra pelo app "Meus Arquivos".*</p>
+            </div>
+
+            <div class="bg-amber-50 border border-amber-200 p-3 rounded-xl text-[11px] text-amber-950 space-y-1">
+                <p class="font-bold text-amber-800">No iPhone (Safari):</p>
+                <p>Toque no ícone de <strong>Compartilhar (quadrado com seta)</strong> e selecione <strong>"Adicionar à Tela de Início"</strong>.</p>
+            </div>
+
+            <button onclick="fecharModalAjuda()" class="w-full bg-slate-800 active:bg-slate-900 text-white font-bold py-2 rounded-xl text-xs">Entendi!</button>
+        </div>
+    </div>
+
+    <footer class="mt-8 text-center text-[10px] text-slate-400 no-print">
+        Lavando Roupas Sem Amaciante no Tanquinho • Edição Mobile App
+    </footer>
+
+    <!-- LÓGICA JAVASCRIPT -->
+    <script>
+        let currentRemessas = 5;
+        let waterMode = 'reusar';
+
+        const baseItems = [
+            { leva: '1ª LEVA', itens: '🍽️ Panos de Prato', usaCoala: false },
+            { leva: '2ª LEVA', itens: '🩲 Peças Íntimas', usaCoala: false },
+            { leva: '3ª LEVA', itens: '👕 Roupas & Toalhas (Parte 1)', usaCoala: true },
+            { leva: '4ª LEVA', itens: '👖 Roupas & Bermudas (Parte 2)', usaCoala: true },
+            { leva: '5ª LEVA', itens: '👗 Roupas & Camisas (Parte 3)', usaCoala: true },
+            { leva: '6ª LEVA', itens: '🛏️ Lençóis & Toalhas (Parte 4)', usaCoala: true }
+        ];
+
+        function abrirModalAjuda() {
+            document.getElementById('modal-ajuda').classList.remove('hidden');
+        }
+
+        function fecharModalAjuda() {
+            document.getElementById('modal-ajuda').classList.add('hidden');
+        }
+
+        // FUNÇÃO PARA BAIXAR PDF DIRETO
+        function baixarPdf() {
+            const element = document.getElementById('guia-conteudo');
+            const noPrintElements = document.querySelectorAll('.no-print');
+            
+            noPrintElements.forEach(el => el.style.display = 'none');
+
+            const opt = {
+                margin:       0.2,
+                filename:     'guia_lavagem_tanquinho.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true },
+                jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                noPrintElements.forEach(el => el.style.display = '');
+            });
+        }
+
+        // FUNÇÃO PARA BAIXAR ARQUIVO INTERATIVO (.html)
+        function baixarHtml() {
+            const htmlContent = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+            const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'guia_lavagem_tanquinho.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+        }
+
+        function setWaterMode(mode) {
+            waterMode = mode;
+            document.getElementById('btn-water-reusar').className = mode === 'reusar' 
+                ? 'flex-1 py-2 rounded-lg bg-sky-600 text-white shadow-xs font-bold' 
+                : 'flex-1 py-2 rounded-lg text-slate-600 font-semibold hover:bg-slate-200';
+            
+            document.getElementById('btn-water-trocar').className = mode === 'trocar' 
+                ? 'flex-1 py-2 rounded-lg bg-sky-600 text-white shadow-xs font-bold' 
+                : 'flex-1 py-2 rounded-lg text-slate-600 font-semibold hover:bg-slate-200';
+
+            renderDosages();
+        }
+
+        function setRemessas(num) {
+            currentRemessas = num;
+            [2, 3, 4, 5, 6].forEach(n => {
+                const btn = document.getElementById(`btn-rem-${n}`);
+                if (btn) {
+                    btn.className = n === num 
+                        ? (n === 5 ? 'px-2.5 h-8 rounded-lg font-bold bg-sky-600 text-white shadow-xs' : 'w-8 h-8 rounded-lg font-bold bg-sky-600 text-white shadow-xs')
+                        : (n === 5 ? 'px-2.5 h-8 rounded-lg font-semibold text-slate-700 hover:bg-slate-200' : 'w-8 h-8 rounded-lg font-semibold text-slate-700 hover:bg-slate-200');
+                }
+            });
+            renderDosages();
+        }
+
+        function renderDosages() {
+            const containerMobile = document.getElementById('dosage-cards-mobile');
+            const tbodyDesktop = document.getElementById('dosage-table-body');
+            
+            let htmlMobile = '';
+            let htmlDesktop = '';
+
+            for (let i = 0; i < currentRemessas; i++) {
+                const item = baseItems[i];
+                let estadoAgua = '';
+                let doseVinagre = '';
+                let doseCoala = '';
+
+                if (waterMode === 'trocar') {
+                    estadoAgua = '🚰 Água Limpa (Nova)';
+                    doseVinagre = '150 mL (1 copo)';
+                    doseCoala = item.usaCoala ? '10 a 12 gotas' : '0 gotas (ZERO)';
+                } else {
+                    if (i === 0) {
+                        estadoAgua = '💧 Água Limpa (Início)';
+                        doseVinagre = '150 mL (1 copo)';
+                        doseCoala = '0 gotas (ZERO)';
+                    } else if (i === 1) {
+                        estadoAgua = '🔄 Reutilizada (Leva 1)';
+                        doseVinagre = '50 mL (1/3 copo)';
+                        doseCoala = '0 gotas (ZERO)';
+                    } else if (i === 2) {
+                        estadoAgua = '🔄 Reutilizada + Perfume';
+                        doseVinagre = '50 mL (1/3 copo)';
+                        doseCoala = '10 a 12 gotas';
+                    } else {
+                        estadoAgua = i >= 4 ? '🔄 Reutilizada (Trocar se turva)' : '🔄 Reutilizada (Reforço)';
+                        doseVinagre = '50 mL (1/3 copo)';
+                        doseCoala = '5 a 8 gotas';
+                    }
+                }
+
+                // CARDS MOBILE
+                htmlMobile += `
+                    <div class="p-3.5 rounded-2xl border-2 ${item.usaCoala ? 'border-rose-200 bg-rose-50/20' : 'border-amber-200 bg-amber-50/20'} shadow-xs space-y-2.5">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-extrabold tracking-wider px-2.5 py-1 rounded-md ${item.usaCoala ? 'bg-rose-100 text-rose-800' : 'bg-amber-100 text-amber-900'}">
+                                ${item.leva}
+                            </span>
+                            <span class="font-extrabold text-[10px] uppercase px-2.5 py-1 rounded-full ${item.usaCoala ? 'bg-rose-500 text-white' : 'bg-slate-200 text-slate-700'}">
+                                ${item.usaCoala ? '✨ PERFUMADO' : '🚫 SEM PERFUME'}
+                            </span>
+                        </div>
+
+                        <h3 class="font-extrabold text-slate-800 text-sm pl-0.5">
+                            ${item.itens}
+                        </h3>
+
+                        <div class="bg-white/90 rounded-xl p-2.5 border border-slate-200/80 space-y-1.5 text-[11px]">
+                            <div class="flex items-center justify-between border-b border-slate-100 pb-1">
+                                <span class="text-slate-500 font-medium">💧 Água:</span>
+                                <span class="font-bold text-slate-800">${estadoAgua}</span>
+                            </div>
+                            <div class="flex items-center justify-between border-b border-slate-100 pb-1">
+                                <span class="text-slate-500 font-medium">🧪 Vinagre:</span>
+                                <span class="font-extrabold text-sky-700">${doseVinagre}</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-slate-500 font-medium">🌸 Coala:</span>
+                                <span class="font-extrabold ${item.usaCoala ? 'text-rose-600' : 'text-slate-400'}">${doseCoala}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // TABELA DESKTOP
+                htmlDesktop += `
+                    <tr class="${i % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'}">
+                        <td class="p-2.5 font-bold text-slate-800">${item.leva}</td>
+                        <td class="p-2.5 text-slate-700">${item.itens}</td>
+                        <td class="p-2.5 text-slate-600">${estadoAgua}</td>
+                        <td class="p-2.5 text-sky-700 font-bold">${doseVinagre}</td>
+                        <td class="p-2.5 font-bold ${item.usaCoala ? 'text-rose-600' : 'text-slate-400'}">${doseCoala}</td>
+                        <td class="p-2.5">
+                            ${item.usaCoala 
+                                ? '<span class="bg-rose-100 text-rose-700 font-bold text-[10px] px-2 py-0.5 rounded-full">SIM ✨</span>' 
+                                : '<span class="bg-amber-100 text-amber-800 font-bold text-[10px] px-2 py-0.5 rounded-full">SEM PERFUME 🚫</span>'}
+                        </td>
+                    </tr>
+                `;
+            }
+
+            containerMobile.innerHTML = htmlMobile;
+            tbodyDesktop.innerHTML = htmlDesktop;
+        }
+
+        // ATUALIZA A BARRA DE PORCENTAGEM E BARRA VISUAL
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('.checklist-checkbox');
+            const checked = document.querySelectorAll('.checklist-checkbox:checked');
+            const percent = checkboxes.length ? Math.round((checked.length / checkboxes.length) * 100) : 0;
+
+            const barElement = document.getElementById('progress-bar');
+            const percentElement = document.getElementById('progress-percent');
+
+            if (barElement) barElement.style.width = `${percent}%`;
+            if (percentElement) percentElement.innerText = `${percent}%`;
+        }
+
+        function resetChecklist() {
+            const checkboxes = document.querySelectorAll('.checklist-checkbox');
+            checkboxes.forEach(cb => cb.checked = false);
+            updateProgress();
+        }
+
+        window.onload = function() {
+            setWaterMode('reusar');
+            setRemessas(5);
+            updateProgress();
+        };
+    </script>
+</body>
+</html>
